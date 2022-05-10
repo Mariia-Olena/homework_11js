@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getSum(a, b) {
+            return a + b
+        };
+
+        function cache(fn) {
+            const cacheStore = [];
+            let callFnCount = 0;
+            // console.log(cacheStore);
+
+            return function() {
+                const args = Array.from(arguments);
+                const argsToString = args.join();
+
+                resultFromCache = cacheStore.find(cacheObj => cacheObj.parameters === argsToString);
+
+                if (resultFromCache) {
+                    return resultFromCache.result
+                } else {
+                    const cacheObj = {
+                        parameters: argsToString,
+                        result: fn.apply(null, args)
+                    };
+
+                    if (callFnCount < 10) {
+                        cacheStore[callFnCount] = cacheObj;
+                    } else {
+                        cacheStore[callFnCount % 10] = cacheObj;
+                    };
+                    callFnCount++;
+                    return cacheObj.result
+                };
+            };
+        };
+
+        const baz = cache(getSum);
+        // console.log(baz(1, 1));
+        // console.log(baz(2, 2));
+        // console.log(baz(3, 3));
+        // console.log(baz(4, 4));
+        // console.log(baz(5, 5));
+        // console.log(baz(6, 6));
+        // console.log(baz(7, 7));
+        // console.log(baz(8, 8));
+        // console.log(baz(9, 9));
+        // console.log(baz(10, 10));
+        // console.log(baz(11, 11));
+        // console.log(baz(12, 12));
+        // console.log(baz(13, 13));
+        // console.log(baz(6, 6));
+        // console.log(baz(7, 7));
+    </script>
+</body>
+</html>
